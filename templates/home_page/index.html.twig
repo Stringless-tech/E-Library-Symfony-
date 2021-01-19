@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-biblioteka{% endblock %}
+
+{% block body %}
+<h1>Strona główna</h1>
+    <a href="{{ path('books') }}">Książki</a>
+    <a href="{{ path('categories') }}">Kategorie</a>
+{% endblock %}

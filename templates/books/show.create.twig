@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Książka {{ book.title }}!{% endblock %}
+
+{% block body %}
+    <img style="width:400px; height:auto" src="
+        {% if(book.imageFilename != null) %}
+        {{ asset('uploads/images/' ~ book.imageFilename) }}
+        {% else %}
+        {{ asset('uploads/images/default.jpg') }}
+        {% endif %}
+        "/>
+    <p>{{ book.id }}</p>
+    <p>{{ book.title }}</p>
+    <p>{{ book.author }}</p>
+    <p>{{ book.description }}</p>
+    <p>{{ book.category.categoryName }}</p>
+{% endblock %}

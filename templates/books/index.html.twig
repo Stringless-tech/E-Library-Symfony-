@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wszystkie książki!{% endblock %}
+
+{% block body %}
+    <h1>Wszystkie książki</h1>
+
+    <a href="{{ path('create-books') }}"><button type="button" class="btn btn-dark">Dodaj książke</button></a><br/><br/>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Zdjęcie</th>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>Opis</th>
+            <th>Kategoria</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <th>{{ book.id }}</th>
+                <th><img style="width:100px; height:auto" src="
+        {% if(book.imageFilename != null) %}
+        {{ asset('uploads/images/' ~ book.imageFilename) }}
+        {% else %}
+        {{ asset('uploads/images/default.jpg') }}
+        {% endif %}
+        "/></th>
+                <th><a href="{{ path('show-books', {'id': book.id}) }}">{{ book.title }}</a></th>
+                <th>{{ book.author }}</th>
+                <th>{{ book.description }}</th>
+                <th>{{ book.category.categoryName }}</th>
+                <th><a href="{{ path('edit-books', {'id': book.id}) }}">Edytuj</a> / <a href="{{ path('remove-books', {'id': book.id}) }}">Usuń</a></th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

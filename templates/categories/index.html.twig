@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista wszystkich kategorii!{% endblock %}
+
+{% block body %}
+<h1>Wszystkie kategorie</h1>
+    <a href="{{ path('create-category') }}"><button type="button" class="btn btn-dark">Dodaj kategorię</button></a><br/><br/>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th>Nazwa kategorii</th>
+            <th>Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <th>{{ category.id }}</th>
+                <th><a href="{{ path('show-category', {'id': category.id}) }}">{{ category.categoryName }}</a></th>
+                <th><a href="{{ path('edit-category', {'id': category.id}) }}">Edytuj</a> / <a href="{{ path('remove-category', {'id': category.id}) }}">Usuń</a></th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
