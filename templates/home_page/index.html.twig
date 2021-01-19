@@ -4,6 +4,12 @@
 
 {% block body %}
 <h1>Strona główna</h1>
-    <a href="{{ path('books') }}">Książki</a>
-    <a href="{{ path('categories') }}">Kategorie</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('books') }}">Książki</a>
+        <a href="{{ path('categories') }}">Kategorie</a>
+        <a href="{{ path('app_logout') }}">Wyloguj się</a>
+    {% else %}
+        <a href="{{ path('app_login') }}">Zaloguj się</a>
+        <a href="{{ path('app_register') }}">Zarejestruj się</a>
+    {% endif %}
 {% endblock %}

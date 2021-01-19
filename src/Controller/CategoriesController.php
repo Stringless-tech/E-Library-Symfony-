@@ -17,6 +17,7 @@ class CategoriesController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository): Response
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $categories = $categoryRepository->findAll();
         return $this->render('categories/index.html.twig',[
             'categories' => $categories
@@ -28,6 +29,7 @@ class CategoriesController extends AbstractController
      */
     public function create(Request $request)
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -51,6 +53,7 @@ class CategoriesController extends AbstractController
      */
     public function edit($id, CategoryRepository $categoryRepository, Request $request)
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = $categoryRepository->find($id);
         $form = $this->createForm(CategoryType::class,$category);
         $form->handleRequest($request);
@@ -74,6 +77,7 @@ class CategoriesController extends AbstractController
      */
     public function remove($id, CategoryRepository $categoryRepository)
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = $categoryRepository->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
@@ -86,6 +90,7 @@ class CategoriesController extends AbstractController
      */
     public function show($id, CategoryRepository $categoryRepository)
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = $categoryRepository->find($id);
         return $this->render('categories/show.html.twig',[
             'category' => $category
