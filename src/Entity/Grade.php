@@ -29,7 +29,7 @@ class Grade
     private $bookId;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="grades")
      * @ORM\JoinColumn(nullable=false)
      */
     private $userId;

@@ -46,5 +46,27 @@ class BookRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+*/
+    public function findTop5RatedBooks()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('avg(g.value) as avg_value, b.title,b.author,b.imageFilename,b.id')
+            ->join('b.grades','g')
+            ->groupBy('g.bookId')
+            ->orderBy('avg_value','DESC')
+            ->setMaxResults( 5 )
+            ->getQuery()
+            ->getResult();
+    }
+    public function searchResults($slug)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id,b.title,b.author,b.imageFilename,c.categoryName')
+            ->join('b.category','c')
+            ->where('b.title LIKE :val')
+            ->orWhere('b.author LIKE :val')
+            ->setParameter('val', '%'.$slug.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

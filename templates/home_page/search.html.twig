@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wyniki{% endblock %}
+
+{% block body %}
+    <h1>Wyniki wyszukiwania</h1>
+    <div style="width:100%">
+        {% for book in books %}
+            <div style="width:20%;float:left;">
+                <a href="{{ path('show-books', {'id': book.id}) }}">
+                    <img alt="picture" style="width:90%; height:auto" src="
+            {% if(book.imageFilename != null) %}
+                {{ asset('uploads/images/' ~ book.imageFilename) }}
+            {% else %}
+                {{ asset('uploads/images/default.jpg') }}
+            {% endif %}
+            "/>
+                    <p>{{ book.title }}</p>
+                    <p>{{ book.author }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

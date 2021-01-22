@@ -12,4 +12,37 @@
         <a href="{{ path('app_login') }}">Zaloguj się</a>
         <a href="{{ path('app_register') }}">Zarejestruj się</a>
     {% endif %}
+    <div style="width:100%;margin-top:1%;">
+        {{ form(form) }}
+    </div>
+<div style="width:100%;margin-top:1%;">
+    <h2>Top 5 oceniane</h2>
+    {% for book in test %}
+        <div style="width:20%;float:left;">
+            <a href="{{ path('show-books', {'id': book.id}) }}">
+            <img alt="picture" style="width:90%; height:auto" src="
+            {% if(book.imageFilename != null) %}
+                {{ asset('uploads/images/' ~ book.imageFilename) }}
+            {% else %}
+                {{ asset('uploads/images/default.jpg') }}
+            {% endif %}
+            "/>
+            <p>{{ book.title }}</p>
+            <p>{{ book.author }}</p>
+            <p>{{ book.avg_value }}</p>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+    <div style="width:100%;margin-top:1%;">
+        <h2>Nasze kategorie</h2>
+        {% for category in categories %}
+            <div style="width:20%;float:left;">
+                <a href="{{ path('show-category', {'id': category.id}) }}">
+                    <p>{{ category.categoryName }}</p>
+
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
