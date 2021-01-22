@@ -24,6 +24,24 @@ class Category
      */
     private $categoryName;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="category")
+     */
+    private $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

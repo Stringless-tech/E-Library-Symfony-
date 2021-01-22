@@ -1,8 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Kategoria {{ category.categoryName }}!{% endblock %}
+{% block title %}Kategoria {{ categories.0.categoryName }}{% endblock %}
 
 {% block body %}
-    <p>{{ category.id }}</p>
-    <p>{{ category.categoryName }}</p>
+    <h2>Kategoria: {{ categories.0.categoryName }}</h2>
+    <div style="width:100%;margin-top:1%;">
+        {% for book in categories %}
+            <div style="width:20%;float:left;">
+                <a href="{{ path('show-books', {'id': book.id}) }}">
+                    <img alt="picture" style="width:90%; height:auto" src="
+            {% if(book.imageFilename != null) %}
+                {{ asset('uploads/images/' ~ book.imageFilename) }}
+            {% else %}
+                {{ asset('uploads/images/default.jpg') }}
+            {% endif %}
+            "/>
+                    <p>{{ book.categoryName }}</p>
+                    <p>{{ book.title }}</p>
+                    <p>{{ book.author }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

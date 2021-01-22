@@ -91,9 +91,9 @@ class CategoriesController extends AbstractController
     public function show($id, CategoryRepository $categoryRepository)
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $category = $categoryRepository->find($id);
+        $categories = $categoryRepository->findBooksByCategory($id);
         return $this->render('categories/show.html.twig',[
-            'category' => $category
+            'categories' => $categories
         ]);
     }
 }
