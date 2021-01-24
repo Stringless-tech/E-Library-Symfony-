@@ -12,13 +12,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoriesController extends AbstractController
 {
+    private $category;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->category = $categoryRepository;
+    }
     /**
      * @Route("/categories", name="categories")
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(): Response
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $categories = $categoryRepository->findAll();
+        $categories = $this->category->findAll();
         return $this->render('categories/index.html.twig',[
             'categories' => $categories
         ]);
@@ -51,10 +57,10 @@ class CategoriesController extends AbstractController
     /**
      * @Route("/categories/edit/{id}", name="edit-category")
      */
-    public function edit($id, CategoryRepository $categoryRepository, Request $request)
+    public function edit($id, Request $request)
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $category = $categoryRepository->find($id);
+        $category = $this->category->find($id);
         $form = $this->createForm(CategoryType::class,$category);
         $form->handleRequest($request);
 
@@ -75,10 +81,10 @@ class CategoriesController extends AbstractController
     /**
      * @Route("/categories/remove/{id}", name="remove-category")
      */
-    public function remove($id, CategoryRepository $categoryRepository)
+    public function remove($id)
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $category = $categoryRepository->find($id);
+        $category = $this->category->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();
@@ -88,10 +94,10 @@ class CategoriesController extends AbstractController
     /**
      * @Route("/categories/show/{id}", name="show-category")
      */
-    public function show($id, CategoryRepository $categoryRepository)
+    public function show($id)
     {
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $categories = $categoryRepository->findBooksByCategory($id);
+        $categories = $this->category->findBooksByCategory($id);
         return $this->render('categories/show.html.twig',[
             'categories' => $categories
         ]);

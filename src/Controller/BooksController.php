@@ -21,12 +21,17 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BooksController extends AbstractController
 {
+    private $books;
+    public function __construct(BookRepository $bookRepository)
+    {
+        $this->books = $bookRepository;
+    }
     /**
      * @Route("/books", name="books")
      */
-    public function index(BookRepository $bookRepository): Response
+    public function index(): Response
     {
-        $books = $bookRepository->findAll();
+        $books = $this->books->findAll();
         return $this->render('books/index.html.twig', [
             'books' => $books,
         ]);
@@ -79,9 +84,9 @@ class BooksController extends AbstractController
     /**
      * @Route("/books/edit/{id}", name="edit-books")
      */
-    public function edit($id, Request $request, BookRepository $bookRepository, SluggerInterface $slugger)
+    public function edit($id, Request $request, SluggerInterface $slugger)
     {
-        $book = $bookRepository->find($id);
+        $book = $this->books->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
@@ -122,9 +127,9 @@ class BooksController extends AbstractController
     /**
      * @Route("/books/remove/{id}", name="remove-books")
      */
-    public function remove($id, BookRepository $bookRepository)
+    public function remove($id)
     {
-        $book = $bookRepository->find($id);
+        $book = $this->books->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($book);
         $em->flush();
@@ -134,9 +139,9 @@ class BooksController extends AbstractController
     /**
      * @Route("/books/show/{id}", name="show-books")
      */
-    public function show($id, BookRepository $bookRepository, Request $request, GradeRepository $gradeRepository, StatusRepository $statusRepository)
+    public function show($id, Request $request, GradeRepository $gradeRepository, StatusRepository $statusRepository)
     {
-        $book = $bookRepository->find($id);
+        $book = $this->books->find($id);
         $user = $this->getUser();
         $form_status = $this->status($request,$book,$statusRepository,$user);
         $form_grade = $this->rate($request,$book,$gradeRepository,$user);

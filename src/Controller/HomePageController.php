@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use App\Form\SearchType;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
@@ -12,13 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomePageController extends AbstractController
 {
+
+    private $books;
+
+    public function __construct(BookRepository $bookRepository)
+    {
+        $this->books = $bookRepository;
+    }
     /**
      * @Route("/", name="home_page")
      */
-    public function index(Request $request,CategoryRepository $categoryRepository, BookRepository $bookRepository): Response
+    public function index(Request $request,CategoryRepository $categoryRepository): Response
     {
-        $user = $this->getUser();
-        $test = $bookRepository->findTop5RatedBooks();
+        $test = $this->books->findTop5RatedBooks();
 
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
@@ -40,10 +47,10 @@ class HomePageController extends AbstractController
     /**
      * @Route("/search-results", name="search-results")
      */
-    public function searchResults(Request $request, BookRepository $bookRepository)
+    public function searchResults(Request $request)
     {
         $slug = $request->query->get('slug');
-        $books = $bookRepository->searchResults($slug);
+        $books = $this->books->searchResults($slug);
         return $this->render('home_page/search.html.twig',[
             'books' => $books
         ]);
