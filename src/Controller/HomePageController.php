@@ -19,7 +19,16 @@ class HomePageController extends AbstractController
     {
         $user = $this->getUser();
         $test = $bookRepository->findTop5RatedBooks();
-        $search = $this->search($request,$bookRepository);
+
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted())
+        {
+            $slug = $request->request->get('app_search')['Wyszukaj'];
+            return $this->redirect($this->generateUrl('search-results',['slug' => $slug]));
+        }
+        $search = $form->createView();
+
         $categories = $categoryRepository->findAll();
         return $this->render('home_page/index.html.twig', [
             'categories' => $categories,
@@ -28,24 +37,15 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    public function search($request,$bookRepository)
-    {
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
-        if($form->isSubmitted())
-        {
-            //$slug = $request->request->get('app_search')['Wyszukaj'];
-            //$books = $bookRepository->searchResults($slug);
-            return $this->redirect($this->generateUrl('search-results'));
-        }
-        return $form->createView();
-    }
     /**
      * @Route("/search-results", name="search-results")
      */
-    public function searchResults(BookRepository $bookRepository)
+    public function searchResults(Request $request, BookRepository $bookRepository)
     {
-        //
-        return 'asdasdasd';
+        $slug = $request->query->get('slug');
+        $books = $bookRepository->searchResults($slug);
+        return $this->render('home_page/search.html.twig',[
+            'books' => $books
+        ]);
     }
 }
