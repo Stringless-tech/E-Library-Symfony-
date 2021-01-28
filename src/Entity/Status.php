@@ -23,7 +23,7 @@ class Status
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Book::class)
+     * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="statuses")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bookId;

@@ -63,6 +63,12 @@ class Book
         return $this->grades;
     }
 
+    /**
+     * @ORM\OneToMany(targetEntity=Status::class, mappedBy="bookId")
+     */
+    private $statuses;
+
+
 
     public function getId(): ?int
     {
