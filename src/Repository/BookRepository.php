@@ -69,4 +69,62 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findNewestBooks()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id,b.title,b.author,b.imageFilename,c.categoryName')
+            ->join('b.category','c')
+            ->orderBy('b.id','DESC')
+            ->setMaxResults( 5 )
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findRecommendedForYou($user)
+    {
+        $helperIN = $this->createQueryBuilder('b')
+            ->select('c.id')
+            ->join('b.statuses','s')
+            ->join('b.category','c')
+            ->where("s.status = 'przeczytane'")
+            ->andWhere('s.userId = :user')
+            ->setParameter('user',$user)
+            ->getQuery()
+            ->getResult();
+
+        $helperNOT = $this->createQueryBuilder('b')
+            ->select('b.id')
+            ->join('b.statuses','s')
+            ->where("s.status = 'przeczytane'")
+            ->andWhere('s.userId = :user')
+            ->setParameter('user',$user)
+            ->getQuery()
+            ->getResult();
+
+
+        return $this->createQueryBuilder('b')
+            ->select('b.id,b.title,b.author,b.imageFilename,c.categoryName')
+            ->join('b.category','c')
+            ->where('b.category IN (:helperIN)')
+            ->andWhere('b.id NOT IN (:helperNOT)')
+            ->setParameter('helperIN', $helperIN)
+            ->setParameter('helperNOT',$helperNOT)
+            ->setMaxResults( 5 )
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMyBooks($user)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.id,b.title,b.author,b.imageFilename,c.categoryName,s.status')
+            ->join('b.category', 'c')
+            ->join('b.statuses','s')
+            ->where('s.userId = :user')
+            ->setParameter('user',$user)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
