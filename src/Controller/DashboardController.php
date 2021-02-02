@@ -15,6 +15,7 @@ class DashboardController extends AbstractController
      */
     public function index(BookRepository $bookRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $newestBooks = $bookRepository->findNewestBooks();
         $recomendedForYou = $bookRepository->findRecommendedForYou($user);

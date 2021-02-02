@@ -23,7 +23,7 @@ class CategoriesController extends AbstractController
      */
     public function index(): Response
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $categories = $this->category->findAll();
         return $this->render('categories/index.html.twig',[
             'categories' => $categories
@@ -35,7 +35,7 @@ class CategoriesController extends AbstractController
      */
     public function create(Request $request)
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -59,7 +59,7 @@ class CategoriesController extends AbstractController
      */
     public function edit($id, Request $request)
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = $this->category->find($id);
         $form = $this->createForm(CategoryType::class,$category);
         $form->handleRequest($request);
@@ -83,7 +83,7 @@ class CategoriesController extends AbstractController
      */
     public function remove($id)
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $category = $this->category->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($category);
@@ -96,7 +96,6 @@ class CategoriesController extends AbstractController
      */
     public function show($id)
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $categories = $this->category->findBooksByCategory($id);
         return $this->render('categories/show.html.twig',[
             'categories' => $categories

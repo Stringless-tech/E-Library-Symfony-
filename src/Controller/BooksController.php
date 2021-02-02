@@ -31,6 +31,7 @@ class BooksController extends AbstractController
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $books = $this->books->findAll();
         return $this->render('books/index.html.twig', [
             'books' => $books,
@@ -41,6 +42,7 @@ class BooksController extends AbstractController
      */
     public function create(Request $request, SluggerInterface $slugger)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = new Book();
         $form = $this->createForm(BookType::class,$book);
         $form->handleRequest($request);
@@ -86,6 +88,7 @@ class BooksController extends AbstractController
      */
     public function edit($id, Request $request, SluggerInterface $slugger)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = $this->books->find($id);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -129,6 +132,7 @@ class BooksController extends AbstractController
      */
     public function remove($id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = $this->books->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($book);
